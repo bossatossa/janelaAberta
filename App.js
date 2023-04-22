@@ -12,7 +12,12 @@ TODO: Get the settings done ASAP ROCKY, and then get that api and display stuff 
 
 function TodayWeather({ navigation }) {
   const [id, setId] = useState(null);
-const [name, setName] = useState(false);
+  const [name, setName] = useState(null);
+  const [minTemp, setminTemp] = useState(null);
+  const [maxTemp, setmaxTemp] = useState(null);
+  const [probPer, setprobPerb] = useState(null);
+  const [windDir, setwindDir] = useState(null);
+
  async function getWeather(){
   let used_id;
   let used_name;
@@ -24,6 +29,12 @@ const [name, setName] = useState(false);
       setName(used_name)
       setId(stored_id)
       console.log("it aint null")
+
+      fetch('http://api.ipma.pt/open-data/forecast/meteorology/cities/daily/'+ stored_id +'.json')
+      .then((response) => response.json())
+      .then((json) => console.log(json.data[0]))
+      .catch((error) => console.error(error));
+
      } else {
        used_id = "1151200"
        used_name = "Setúbal"
