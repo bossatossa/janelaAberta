@@ -46,12 +46,40 @@ const [name, setName] = useState(false);
   return (
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Name = {name} | ID = {id}</Text>
-      <Text>Weather here...</Text>
+      <Text>Weather here....</Text>
     </View>
   );
 }
 
  function Settings({ navigation }) {
+  async function getSettings(){
+    let used_id;
+    let used_name;
+    const stored_id = await AsyncStorage.getItem('location_id')
+    const stored_name = await AsyncStorage.getItem('location_name')
+      if (stored_id !== null) {
+        used_id = stored_id;
+        used_name = stored_name;
+        setValue(used_name)
+        console.log("it aint null")
+       } else {
+         used_id = "1151200"
+         used_name = "Setúbal"
+         setValue(used_name)
+         console.log("it was null")
+       }
+  }
+  useEffect( () => {
+
+    getSettings();
+    const unsubscribe = navigation.addListener('focus', () => {
+     
+    });
+
+   
+    return unsubscribe;
+  }, [navigation]);
+
 const data = [
   { label: 'Aveiro', value: '1010500' },
   { label: 'Beja', value: '1020500' },
