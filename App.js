@@ -53,8 +53,8 @@ function TodayWeather({ navigation }) {
         .then((response) => response.json())
         .then((json) => {
           console.log(json.data[0])
-          setminTemp(json.data[0].tMin)
-          setmaxTemp(json.data[0].tMax)
+          setminTemp(Math.round(json.data[0].tMin))
+          setmaxTemp(Math.round(json.data[0].tMax))
           setprecipitaProb(json.data[0].precipitaProb)
           setwindDir(json.data[0].predWindDir)
           setweatherType(json.data[0].idWeatherType)
@@ -183,6 +183,52 @@ function TodayWeather({ navigation }) {
     }
   }
 
+  const styles = StyleSheet.create({
+    mintemp_box: {
+      backgroundColor: '#0080b0',
+      color: 'white',
+      borderRadius: 10,
+      fontSize: 25, 
+      padding: 10,
+      fontWeight: 'bold'
+    },
+    maxtemp_box: {
+      backgroundColor: '#Ee5b3e',
+      color: 'white',
+      borderRadius: 10,
+      fontSize: 25, 
+      padding: 10,
+      fontWeight: 'bold'
+    },
+    
+    text_view: {
+      alignContent: 'space-around',
+       alignItems:'center', 
+       flexDirection: 'column'
+       
+    },
+
+    text:{
+    color: 'white'
+    },
+
+    text_weather_type:{
+      color: 'white',
+      paddingBottom: 20,
+      fontSize: 17,
+      fontWeight: 'bold'
+      },
+
+      text_localidade:{
+        color: 'white',
+        fontSize: 25,
+        fontWeight: 'bold'
+        },
+      
+
+
+  })
+
 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
@@ -194,17 +240,27 @@ function TodayWeather({ navigation }) {
   }, [navigation]);
 
   return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>{name}</Text>
+    <View style={{ flex: 1, backgroundColor:'#90bfd2', justifyContent: 'center' }}>
+      <View style={styles.text_view}>
+      <Text style={styles.text_localidade} >{name}</Text>
+      </View>
+      <View  style={{alignContent: 'center', alignItems:'center'}}>
       <Image
-        style={{}}
         source={weatherImage}
       />
-      <Text>Tempratura Minima: {minTemp}℃</Text>
-      <Text>Tempratura Maxima: {maxTemp}℃</Text>
-      <Text>Probablidade de Percipitação: {precipitaProb}%</Text>
-      <Text>Direção do vento: {windDir}</Text>
-      <Text>{weatherType} : {weatherTypeText}</Text>
+      </View>
+      <View style={styles.text_view}>
+      <Text style={styles.text_weather_type}>{weatherTypeText}</Text>
+      </View>
+      <View style={{ alignContent: 'space-between', justifyContent: 'space-around', flexDirection: 'row'}}>
+      <Text style={styles.mintemp_box}>{minTemp}℃</Text>
+      <Text style={styles.maxtemp_box}>{maxTemp}℃</Text>
+      </View>
+      <View style={styles.text_view}>
+      <Text style={[styles.text, { paddingBottom: 5, paddingTop: 10 }]}>Probablidade de Percipitação: {precipitaProb}%</Text>
+      <Text style={[styles.text, { paddingTop: 5 }]}>Direção do vento: {windDir}</Text>
+      </View>
+      
     </View>
   );
 }
@@ -335,7 +391,7 @@ function Settings({ navigation }) {
           console.log("id stored: " + stored_id + " | name stored: " + stored_name)
         }}
       />
-      <Text style={{ bottom: 35, right: 65 }}>{value}</Text>
+      <Text style={{}}>{value}</Text>
     </View>
   );
 }
