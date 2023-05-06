@@ -21,6 +21,8 @@ const thunder_rain = require('../assets/weathericons/128/thunderstorms-rain.png'
 const hail = require('../assets/weathericons/128/hail.png')
 const snowflake = require('../assets/weathericons/128/snowflake.png')
 const cloudy = require('../assets/weathericons/128/cloudy.png')
+const humidity = require('../assets/weathericons/128/humidity.png')
+const compass = require('../assets/weathericons/128/compass.png') 
 
 export function TodayWeather({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -89,7 +91,7 @@ export function TodayWeather({ navigation }) {
 
   function changeImage(int) {
     let now = new Date;
-    let hours = now.getUTCHours()
+    let hours = now.getHours();
     console.log(hours);
 
     switch (int) {
@@ -97,37 +99,37 @@ export function TodayWeather({ navigation }) {
         setweatherImage(no_info)
         break;
       case 1:
-        if (hours >= 20) {
+        if (hours < 6 || hours >= 20) {
           setweatherImage(clear_night)
-        } else if (hours > 6 && hours < 20) {
+        } else if (hours >= 6 && hours < 20) {
           setweatherImage(clear_day)
         }
         break;
       case 2:
-        if (hours >= 20) {
+        if (hours < 6 || hours >= 20) {
           setweatherImage(partly_cloudy_night)
-        } else if (hours > 6 && hours < 20) {
+        } else if (hours >= 6 && hours < 20) {
           setweatherImage(partly_cloudy_day)
         }
         break;
       case 3:
-        if (hours >= 20) {
+        if (hours < 6 || hours >= 20) {
           setweatherImage(overcast_night)
-        } else if (hours > 6 && hours < 20) {
+        } else if  (hours >= 6 && hours < 20) {
           setweatherImage(overcast_day)
         }
         break;
       case 4:
-        if (hours >= 20) {
+        if (hours < 6 || hours >= 20) {
           setweatherImage(overcast_night)
-        } else if (hours > 6 && hours < 20) {
+        } else if (hours >= 6 && hours < 20) {
           setweatherImage(overcast_day)
         }
         break;
       case 5:
-        if (hours >= 20) {
+        if (hours < 6 || hours >= 20) {
           setweatherImage(overcast_night)
-        } else if (hours > 6 && hours < 20) {
+        } else if (hours >= 6 && hours < 20){
           setweatherImage(overcast_day)
         }
         break;
@@ -250,6 +252,21 @@ export function TodayWeather({ navigation }) {
       fontWeight: 'bold'
     },
 
+    humidity_box: {
+      backgroundColor: 'white',
+      color: 'white',
+      borderRadius: 10,
+      padding: 5,
+    },
+
+    wind_direction_box: {
+      backgroundColor: 'white',
+      color: 'white',
+      borderRadius: 10,
+      padding: 5,
+    },
+
+
 
 
   })
@@ -266,7 +283,10 @@ export function TodayWeather({ navigation }) {
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      <View style={{ flex: 1, backgroundColor: '#90bfd2', justifyContent: 'center' }}>
+      <View style={{ alignContent: 'space-between', flexDirection: 'row', top: 1 }}>
+            <Text style={{ color: 'black', fontWeight: 'bold', backgroundColor: 'white',borderRadius: 5, padding: 2,}}>Dados IPMA ©{year}</Text>
+          </View>
+      <View style={{ flex: 1, backgroundColor: '#B58A80', justifyContent: 'center' }}>
 
         {loading ? (
           <ActivityIndicator
@@ -276,9 +296,6 @@ export function TodayWeather({ navigation }) {
           />
         ) : (
           <>
-          <View style={{ alignContent: 'space-between', flexDirection: 'row',  }}>
-            <Text style={{ color: 'black', fontWeight: 'bold', bottom: 150 , backgroundColor: 'white',borderRadius: 5, padding: 2,}}>Dados IPMA ©{year}</Text>
-          </View>
             <View style={styles.text_view}>
               <Text style={styles.text_localidade} >{name}</Text>
             </View>
@@ -294,9 +311,19 @@ export function TodayWeather({ navigation }) {
               <Text style={styles.mintemp_box}>{minTemp}℃</Text>
               <Text style={styles.maxtemp_box}>{maxTemp} ℃</Text>
             </View>
-            <View style={styles.text_view}>
-              <Text style={[styles.text, { paddingBottom: 5, paddingTop: 10 }]}>Probablidade de Percipitação: {precipitaProb}%</Text>
-              <Text style={[styles.text, { paddingTop: 5 }]}>Direção do vento: {windDir}</Text>
+
+            <View style={[styles.text_view, { alignContent: 'space-between', justifyContent: 'space-around', flexDirection: 'column', top: 5 }]}>
+            
+            <View style={[styles.humidity_box, { flexDirection: 'row',  justifyContent: 'center', alignItems: 'center', top: 5 }]}>
+            <Image source={humidity} style={{width:35, height:35}}/>
+            <Text style={{paddingRight: 5}} > Probablidade de Percipitação: {precipitaProb}%</Text>
+            </View>  
+            
+            <View style={[styles.wind_direction_box, { flexDirection: 'row',  justifyContent: 'center', alignItems: 'center',  paddingTop: 5, top: 10  }]}>
+            <Image source={compass} style={{width:30, height:30}}/>
+            <Text style={{paddingRight: 5}}>Direção do vento: {windDir}</Text>
+            </View>
+            
             </View>
           </>
         )}
