@@ -9,7 +9,7 @@ const Drawer = createDrawerNavigator();
 function MainDrawer() {
   return (
     <Drawer.Navigator>
-      <Drawer.Screen name="O Tempo" component={TodayWeather} />
+      <Drawer.Screen name="A Janela" component={TodayWeather} />
       <Drawer.Screen name="Definições" component={Settings} />
     </Drawer.Navigator>
   );

@@ -4,25 +4,54 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { weather_ids } from "../const";
 
 const no_info = require('../assets/weathericons/128/not-available.png')
+
 const clear_day = require('../assets/weathericons/128/clear-day.png')
 const clear_night = require('../assets/weathericons/128/clear-night.png')
+
 const partly_cloudy_night = require('../assets/weathericons/128/partly-cloudy-night.png')
 const partly_cloudy_day = require('../assets/weathericons/128/partly-cloudy-day.png')
+
 const overcast_day = require('../assets/weathericons/128/overcast-day.png')
 const overcast_night = require('../assets/weathericons/128/overcast-night.png')
-const overcast_rain_day = require('../assets/weathericons/128/overcast-day-rain.png')
-const overcast_rain_night = require('../assets/weathericons/128/overcast-night-rain.png')
+
 const rain = require('../assets/weathericons/128/rain.png')
+const rain_day = require('../assets/weathericons/128/overcast-day-rain.png')
+const rain_night = require('../assets/weathericons/128/overcast-night-rain.png')
+
 const drizzle = require('../assets/weathericons/128/drizzle.png')
+const drizzle_day = require('../assets/weathericons/128/overcast-day-drizzle.png')
+const drizzle_night = require('../assets/weathericons/128/overcast-night-drizzle.png')
+
 const fog = require('../assets/weathericons/128/fog.png')
+const fog_day = require('../assets/weathericons/128/partly-cloudy-day-fog.png')
+const fog_night = require('../assets/weathericons/128/partly-cloudy-night-fog.png')
+
 const snow = require('../assets/weathericons/128/snow.png')
+const snow_day = require('../assets/weathericons/128/overcast-day-snow.png')
+const snow_night = require('../assets/weathericons/128/overcast-night-snow.png')
+
 const thunder = require('../assets/weathericons/128/thunderstorms.png')
+const thunder_day = require('../assets/weathericons/128/thunderstorms.png')
+const thunder_night = require('../assets/weathericons/128/thunderstorms.png')
+
 const thunder_rain = require('../assets/weathericons/128/thunderstorms-rain.png')
+const thunder_rain_day = require('../assets/weathericons/128/thunderstorms-day-rain.png')
+const thunder_rain_night = require('../assets/weathericons/128/thunderstorms-night-rain.png')
+
 const hail = require('../assets/weathericons/128/hail.png')
+const hail_day = require('../assets/weathericons/128/partly-cloudy-day-hail.png')
+const hail_night = require('../assets/weathericons/128/partly-cloudy-night-hail.png')
+
 const snowflake = require('../assets/weathericons/128/snowflake.png')
+
 const cloudy = require('../assets/weathericons/128/cloudy.png')
+const cloudy_day = require('../assets/weathericons/128/partly-cloudy-day.png')
+const cloudy_night = require('../assets/weathericons/128/partly-cloudy-night.png')
+
 const humidity = require('../assets/weathericons/128/humidity.png')
-const compass = require('../assets/weathericons/128/compass.png') 
+const compass = require('../assets/weathericons/128/compass.png')
+const wind_strong = require('../assets/weathericons/128/windsock.png')
+const wind_weak = require('../assets/weathericons/128/windsock-weak.png')
 
 export function TodayWeather({ navigation }) {
   const [loading, setLoading] = useState(true);
@@ -32,6 +61,8 @@ export function TodayWeather({ navigation }) {
   const [maxTemp, setmaxTemp] = useState(null);
   const [precipitaProb, setprecipitaProb] = useState(null);
   const [windDir, setwindDir] = useState(null);
+  const [windStrenght, setwindStrenght] = useState(null);
+  const [windStrenghtImage, setwindStrenghtImage] = useState(null);
   const [weatherType, setweatherType] = useState(null);
   const [weatherTypeText, setweatherTypeText] = useState(null);
   const [weatherImage, setweatherImage] = useState(null);
@@ -58,12 +89,13 @@ export function TodayWeather({ navigation }) {
           setmaxTemp(Math.round(json.data[0].tMax))
           setprecipitaProb(json.data[0].precipitaProb)
           setwindDir(json.data[0].predWindDir)
+          changeWindStrenght(json.data[0].classWindSpeed)
           setweatherType(json.data[0].idWeatherType)
           setweatherTypeText(weather_ids.get(json.data[0].idWeatherType.toString()))
           changeImage(json.data[0].idWeatherType)
         })
-        .catch((error) => console.error(error));
-        setLoading(false)
+        .catch((error) => { console.error(error) });
+      setLoading(false)
 
     } else {
       // default location
@@ -81,19 +113,41 @@ export function TodayWeather({ navigation }) {
           setwindDir(json.data[0].predWindDir)
           setweatherType(json.data[0].idWeatherType)
           setweatherTypeText(weather_ids.get(json.data[0].idWeatherType.toString()))
+          changeWindStrenght(json.data[0].classWindSpeed)
           changeImage(json.data[0].idWeatherType)
         })
-        .catch((error) => console.error(error));
+        .catch((error) => {
+          console.error(error)
+        });
       console.log("it was null")
       setLoading(false)
+    }
+  }
+
+  function changeWindStrenght(int) {
+    switch (int) {
+      case 1:
+        setwindStrenght("Fraco")
+        setwindStrenghtImage(wind_weak)
+        break;
+      case 2:
+        setwindStrenght("Moderado")
+        setwindStrenghtImage(wind_weak)
+        break;
+      case 3:
+        setwindStrenght("Forte")
+        setwindStrenghtImage(wind_strong)
+        break;
+      case 4:
+        setwindStrenght("Muito Forte")
+        setwindStrenghtImage(wind_strong)
+        break;
     }
   }
 
   function changeImage(int) {
     let now = new Date;
     let hours = now.getHours();
-    console.log(hours);
-
     switch (int) {
       case 0:
         setweatherImage(no_info)
@@ -115,7 +169,7 @@ export function TodayWeather({ navigation }) {
       case 3:
         if (hours < 6 || hours >= 20) {
           setweatherImage(overcast_night)
-        } else if  (hours >= 6 && hours < 20) {
+        } else if (hours >= 6 && hours < 20) {
           setweatherImage(overcast_day)
         }
         break;
@@ -129,84 +183,180 @@ export function TodayWeather({ navigation }) {
       case 5:
         if (hours < 6 || hours >= 20) {
           setweatherImage(overcast_night)
-        } else if (hours >= 6 && hours < 20){
+        } else if (hours >= 6 && hours < 20) {
           setweatherImage(overcast_day)
         }
         break;
       case 6:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 7:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 8:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 9:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 10:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 11:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 12:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 13:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 14:
-        setweatherImage(rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(rain_day)
+        }
         break;
       case 15:
-        setweatherImage(drizzle)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(drizzle_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(drizzle_day)
+        }
         break;
       case 16:
-        setweatherImage(fog)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(fog_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(fog_day)
+        }
         break;
       case 17:
-        setweatherImage(fog)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(fog_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(fog_day)
+        }
         break;
       case 18:
-        setweatherImage(snow)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(snow_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(snow_day)
+        }
         break;
       case 19:
-        setweatherImage(thunder)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(thunder_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(thunder_day)
+        }
         break;
       case 20:
-        setweatherImage(thunder_rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(thunder_rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(thunder_rain_day)
+        }
         break;
       case 21:
-        setweatherImage(hail)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(hail_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(hail_day)
+        }
         break;
       case 22:
         setweatherImage(snowflake)
         break;
       case 23:
-        setweatherImage(thunder_rain)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(thunder_rain_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(thunder_rain_day)
+        }
         break;
       case 24:
-        setweatherImage(cloudy)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(cloudy_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(cloudy_day)
+        }
         break;
       case 25:
-        setweatherImage(cloudy)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(cloudy_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(cloudy_day)
+        }
         break;
       case 26:
-        setweatherImage(fog)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(fog_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(fog_day)
+        }
         break;
       case 27:
-        setweatherImage(cloudy)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(cloudy_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(cloudy_day)
+        }
         break;
       case 28:
-        setweatherImage(snow)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(snow_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(snow_day)
+        }
         break;
       case 29:
-        setweatherImage(snow)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(snow_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(snow_day)
+        }
         break;
       case 30:
-        setweatherImage(snow)
+        if (hours < 6 || hours >= 20) {
+          setweatherImage(snow_night)
+        } else if (hours >= 6 && hours < 20) {
+          setweatherImage(snow_day)
+        }
         break;
     }
   }
@@ -265,10 +415,6 @@ export function TodayWeather({ navigation }) {
       borderRadius: 10,
       padding: 5,
     },
-
-
-
-
   })
 
 
@@ -284,8 +430,8 @@ export function TodayWeather({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={{ alignContent: 'space-between', flexDirection: 'row', top: 1 }}>
-            <Text style={{ color: 'black', fontWeight: 'bold', backgroundColor: 'white',borderRadius: 5, padding: 2,}}>Dados IPMA ©{year}</Text>
-          </View>
+        <Text style={{ color: 'black', fontWeight: 'bold', backgroundColor: 'white', borderRadius: 5, padding: 2, }}>Dados IPMA ©{year}</Text>
+      </View>
       <View style={{ flex: 1, backgroundColor: '#B58A80', justifyContent: 'center' }}>
 
         {loading ? (
@@ -311,19 +457,22 @@ export function TodayWeather({ navigation }) {
               <Text style={styles.mintemp_box}>{minTemp}℃</Text>
               <Text style={styles.maxtemp_box}>{maxTemp} ℃</Text>
             </View>
-
             <View style={[styles.text_view, { alignContent: 'space-between', justifyContent: 'space-around', flexDirection: 'column', top: 5 }]}>
-            
-            <View style={[styles.humidity_box, { flexDirection: 'row',  justifyContent: 'center', alignItems: 'center', top: 5 }]}>
-            <Image source={humidity} style={{width:35, height:35}}/>
-            <Text style={{paddingRight: 5}} > Probablidade de Percipitação: {precipitaProb}%</Text>
-            </View>  
-            
-            <View style={[styles.wind_direction_box, { flexDirection: 'row',  justifyContent: 'center', alignItems: 'center',  paddingTop: 5, top: 10  }]}>
-            <Image source={compass} style={{width:30, height:30}}/>
-            <Text style={{paddingRight: 5}}>Direção do vento: {windDir}</Text>
-            </View>
-            
+
+              <View style={[styles.humidity_box, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', top: 5 }]}>
+                <Image source={humidity} style={{ width: 35, height: 35 }} />
+                <Text style={{ paddingRight: 5 }} > Probablidade de Percipitação: {precipitaProb}%</Text>
+              </View>
+
+              <View style={[styles.wind_direction_box, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 4, top: 10 }]}>
+                <Image source={windStrenghtImage} style={{ width: 30, height: 30 }} />
+                <Text style={{ paddingRight: 5 }}>Força do Vento: {windStrenght}</Text>
+              </View>
+
+              <View style={[styles.wind_direction_box, { flexDirection: 'row', justifyContent: 'center', alignItems: 'center', paddingTop: 5, top: 15 }]}>
+                <Image source={compass} style={{ width: 30, height: 30 }} />
+                <Text style={{ paddingRight: 5 }}>Direção do vento: {windDir}</Text>
+              </View>
             </View>
           </>
         )}
