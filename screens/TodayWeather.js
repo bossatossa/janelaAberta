@@ -86,7 +86,16 @@ export function TodayWeather({ navigation }) {
           setweatherTypeText(weather_ids.get(json.data[0].idWeatherType.toString()))
           changeImage(json.data[0].idWeatherType)
         })
-        .catch((error) => { console.error(error) });
+        .catch((error) => { console.error(error)
+          changeImage(0)
+          setminTemp("NaN")
+          setmaxTemp("NaN")
+          setweatherTypeText("Error")
+          setprecipitaProb("Error")
+          changeWindStrenght("Error")
+          setweatherType(0)
+          changeImage(0)
+          setLoading(false)});
       setLoading(false)
 
     } else {
@@ -110,6 +119,15 @@ export function TodayWeather({ navigation }) {
         })
         .catch((error) => {
           console.error(error)
+          changeImage(0)
+          setminTemp("NaN")
+          setmaxTemp("NaN")
+          setweatherTypeText("Error")
+          setprecipitaProb("Error")
+          changeWindStrenght("Error")
+          setweatherType(0)
+          changeImage(0)
+          setLoading(false)
         });
       console.log("it was null")
       setLoading(false)
