@@ -14,37 +14,29 @@ const partly_cloudy_day = require('../assets/weathericons/128/partly-cloudy-day.
 const overcast_day = require('../assets/weathericons/128/overcast-day.png')
 const overcast_night = require('../assets/weathericons/128/overcast-night.png')
 
-const rain = require('../assets/weathericons/128/rain.png')
 const rain_day = require('../assets/weathericons/128/overcast-day-rain.png')
 const rain_night = require('../assets/weathericons/128/overcast-night-rain.png')
 
-const drizzle = require('../assets/weathericons/128/drizzle.png')
 const drizzle_day = require('../assets/weathericons/128/overcast-day-drizzle.png')
 const drizzle_night = require('../assets/weathericons/128/overcast-night-drizzle.png')
 
-const fog = require('../assets/weathericons/128/fog.png')
 const fog_day = require('../assets/weathericons/128/partly-cloudy-day-fog.png')
 const fog_night = require('../assets/weathericons/128/partly-cloudy-night-fog.png')
 
-const snow = require('../assets/weathericons/128/snow.png')
 const snow_day = require('../assets/weathericons/128/overcast-day-snow.png')
 const snow_night = require('../assets/weathericons/128/overcast-night-snow.png')
 
-const thunder = require('../assets/weathericons/128/thunderstorms.png')
-const thunder_day = require('../assets/weathericons/128/thunderstorms.png')
-const thunder_night = require('../assets/weathericons/128/thunderstorms.png')
+const thunder_day = require('../assets/weathericons/128/thunderstorms-day-overcast.png')
+const thunder_night = require('../assets/weathericons/128/thunderstorms-night-overcast.png')
 
-const thunder_rain = require('../assets/weathericons/128/thunderstorms-rain.png')
 const thunder_rain_day = require('../assets/weathericons/128/thunderstorms-day-rain.png')
 const thunder_rain_night = require('../assets/weathericons/128/thunderstorms-night-rain.png')
 
-const hail = require('../assets/weathericons/128/hail.png')
 const hail_day = require('../assets/weathericons/128/partly-cloudy-day-hail.png')
 const hail_night = require('../assets/weathericons/128/partly-cloudy-night-hail.png')
 
 const snowflake = require('../assets/weathericons/128/snowflake.png')
 
-const cloudy = require('../assets/weathericons/128/cloudy.png')
 const cloudy_day = require('../assets/weathericons/128/partly-cloudy-day.png')
 const cloudy_night = require('../assets/weathericons/128/partly-cloudy-night.png')
 
