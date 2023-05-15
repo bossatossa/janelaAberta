@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View} from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Dropdown } from 'react-native-element-dropdown';
-import {local_ids} from "../const";
-
 
 export function Settings({ navigation }) {
     async function getSettings() {
@@ -124,7 +122,7 @@ export function Settings({ navigation }) {
             setValue(item.label);
             setIsFocus(false);
             await AsyncStorage.setItem('location_id', item.value)
-            await AsyncStorage.setItem('location_name', local_ids.get(item.value.toString()))
+            await AsyncStorage.setItem('location_name', item.label)
             const stored_id = await AsyncStorage.getItem('location_id')
             const stored_name = await AsyncStorage.getItem('location_name')
             console.log("id stored: " + stored_id + " | name stored: " + stored_name)
